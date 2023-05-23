@@ -1,0 +1,85 @@
+• Precisa de uma chave para a utilização do Google Maps,
+que é paga no Google Cloud
+AIzaSyD6v5fULYIQf3DgoRdHRxCahyUMBJSYyjc
+
+•https://ionicframework.com/docs/angular/your-first-app
+ionic start mapApp blank --type=angular 
+npm install @ionic/pwa-elements
+
+• Colocar o import no main.ts 
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+// Call the element loader after the platform has been bootstrapped
+defineCustomElements(window);
+
+
+
+• https://ionicframework.com/docs/native/google-maps
+• Native -> Capacitor  -> Setup -> Google Maps
+npm install @capacitor/google-maps
+npx cap sync (acaso não rodar) ionic cap sync 
+
+• Colocar home.module.ts o import
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+
+• Colocar no home.page.scss e trocar o  width:100% e height:100%
+capacitor-google-map {
+  display: inline-block;
+  width: 275px;
+  height: 400px;
+}
+
+• Colocar no home.page.ts
+import { GoogleMap } from '@capacitor/google-maps';
+
+const apiKey = 'YOUR_API_KEY_HERE';
+
+const mapRef = document.getElementById('map');
+
+const newMap = await GoogleMap.create({
+  id: 'my-map', // Unique identifier for this map instance
+  element: mapRef, // reference to the capacitor-google-map element
+  apiKey: apiKey, // Nome do seu App
+  config: {
+    center: {
+      // The initial position to be rendered by the map
+      lat: 33.6, // latitude da etec
+      lng: -117.9, //longitude da etec
+    },
+    zoom: 8, // The initial zoom level to be rendered by the map
+  },
+});
+
+• Colocar no home.page.html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+     Google Maps
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <capacitor-google-map #map></capacitor-google-map>
+</ion-content>
+
+
+•Colocar a chave em environment.prod.ts e environment.ts
+ mapsKey: 'AIzaSyD6v5fULYIQf3DgoRdHRxCahyUMBJSYyjc'
+
+
+• https://ionicframework.com/docs/native/geolocation
+npm install @capacitor/geolocation
+npx cap sync
+
+• Colocar o import no home.page.ts
+import { Geolocation } from '@capacitor/geolocation';
+
+const printCurrentPosition = async () => {
+  const coordinates = await Geolocation.getCurrentPosition();
+
+  console.log('Current position:', coordinates);
+};
